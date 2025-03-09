@@ -2,11 +2,21 @@ import ImageGrid from "../components/ImageGrid";
 import SearchBar from "../components/SearchBar";
 
 async function getInitialImages() {
-  const res = await fetch(
-    `https://pixabay.com/api/?key=${process.env.NEXT_PUBLIC_PIXABAY_API_KEY}&q=nature&image_type=photo&per_page=12`
-  );
-  const data = await res.json();
-  return data.hits;
+  try {
+    const res = await fetch(
+      `https://pixabay.com/api/?key=${process.env.NEXT_PUBLIC_PIXABAY_API_KEY}&q=nature&image_type=photo&per_page=12`
+    );
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch images");
+    }
+
+    const data = await res.json();
+    return data.hits;
+  } catch (error) {
+    console.error("Error fetching images:", error);
+    return [];
+  }
 }
 
 export default async function SearchPage() {

@@ -1,4 +1,3 @@
-// components/ImageGrid.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,13 +15,14 @@ export default function ImageGrid({
 }) {
   const [images, setImages] = useState<Image[]>(initialImages);
   const [loading, setLoading] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Fetch images based on the search query
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const query = searchParams.get("q");
 
     if (query) {
+      setSearchQuery(query);
       setLoading(true);
       fetch(`/api/search?q=${query}`)
         .then((res) => res.json())
@@ -31,13 +31,12 @@ export default function ImageGrid({
           setLoading(false);
         });
     }
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
       {loading
-        ? // Show loading skeletons
-          Array.from({ length: 8 }).map((_, index) => (
+        ? Array.from({ length: 8 }).map((_, index) => (
             <div
               key={index}
               className='bg-white rounded-lg shadow-md overflow-hidden'
@@ -48,8 +47,7 @@ export default function ImageGrid({
               </div>
             </div>
           ))
-        : // Show actual images
-          images.map((image) => (
+        : images.map((image) => (
             <div
               key={image.id}
               className='bg-white rounded-lg shadow-md overflow-hidden'
