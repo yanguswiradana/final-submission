@@ -9,7 +9,7 @@ export default function SearchBar() {
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push(`/search?q=${query}`);
+    router.replace(`/search?q=${query}`); // Use replace instead of push
   };
 
   return (

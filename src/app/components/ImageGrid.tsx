@@ -16,6 +16,7 @@ export default function ImageGrid({
   const [images, setImages] = useState<Image[]>(initialImages);
   const [loading, setLoading] = useState<boolean>(false);
 
+  // Fetch images based on the search query
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const query = searchParams.get("q");
@@ -29,12 +30,13 @@ export default function ImageGrid({
           setLoading(false);
         });
     }
-  }, []);
+  }, [window.location.search]); // Re-run when the query changes
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
       {loading
-        ? Array.from({ length: 8 }).map((_, index) => (
+        ? // Show loading skeletons
+          Array.from({ length: 8 }).map((_, index) => (
             <div
               key={index}
               className='bg-white rounded-lg shadow-md overflow-hidden'
@@ -45,7 +47,8 @@ export default function ImageGrid({
               </div>
             </div>
           ))
-        : images.map((image) => (
+        : // Show actual images
+          images.map((image) => (
             <div
               key={image.id}
               className='bg-white rounded-lg shadow-md overflow-hidden'
