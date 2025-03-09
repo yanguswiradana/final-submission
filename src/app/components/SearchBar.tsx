@@ -1,3 +1,4 @@
+// components/SearchBar.tsx
 "use client";
 
 import { useState } from "react";
@@ -9,7 +10,7 @@ export default function SearchBar() {
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.replace(`/search?q=${query}`);
+    router.push(`/search?q=${query}`);
   };
 
   return (
